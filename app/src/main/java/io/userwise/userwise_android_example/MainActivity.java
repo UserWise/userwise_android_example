@@ -3,7 +3,6 @@ package io.userwise.userwise_android_example;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         userWiseSingleton.setDebugMode(true);
         userWiseSingleton.setParentContext(new WeakReference<Activity>(this));
-        userWiseSingleton.setSurveyListener(new UserWiseSurveyHandler(this));
+        userWiseSingleton.setSurveyListener(new UserWiseSurveyHandler());
         logger.info("UserWise Survey Listener Set");
 
         userWiseSingleton.setApiKey("d28fea54eb83795868d198d52734");
@@ -40,9 +39,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class UserWiseSurveyHandler implements UserWiseSurveyListener {
-        Context context;
-
-        UserWiseSurveyHandler(Context context) { this.context = context; }
 
         @Override
         public void onSurveyAvailable() {
@@ -52,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onSurveyClosed() {
-            MainActivity.logger.info("Survey is being entered into!");
+            MainActivity.logger.info("Survey has been closed!");
         }
 
         @Override
