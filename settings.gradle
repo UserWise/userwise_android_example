@@ -1,0 +1,2 @@
+include ':app', ':userwise_android_sdk'
+rootProject.name='userwise_android_example'
