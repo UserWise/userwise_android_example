@@ -27,15 +27,19 @@ public class MainActivity extends AppCompatActivity {
         userWiseSingleton.setSurveyListener(new UserWiseSurveyHandler());
         logger.info("UserWise Survey Listener Set");
 
-        userWiseSingleton.setApiKey("d28fea54eb83795868d198d52734");
-        userWiseSingleton.setUserId("user123-android");
+        userWiseSingleton.setApiKey("6b6552ebc324a570262deb6bdd4e");
+        userWiseSingleton.setUserId("david-test-android1");
         logger.info("API Key and User ID Set");
     }
 
-    public void loadSurveys(View view) {
-        if (!userWiseSingleton.hasSurveysAvailable()) {
-            userWiseSingleton.refreshHasAvailableSurveys();
-        }
+    public void takeNextSurvey(View view) {
+        // Note: You can forcefully refresh if an appuser has available surveys
+        //if (!userWiseSingleton.hasSurveysAvailable()) {
+        //    userWiseSingleton.refreshHasAvailableSurveys();
+        //}
+
+        // Control when a user is taken into a survey
+        userWiseSingleton.takeNextSurvey();
     }
 
     class UserWiseSurveyHandler implements UserWiseSurveyListener {
@@ -43,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onSurveyAvailable() {
             MainActivity.logger.info("Surveys are available!");
-            userWiseSingleton.takeNextSurvey();
+
+            // Take survey as soon as surveys are available
+            // userWiseSingleton.takeNextSurvey();
         }
 
         @Override
