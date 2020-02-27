@@ -2,12 +2,10 @@ package io.userwise.userwise_android_example;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import java.lang.ref.WeakReference;
 import java.util.logging.Logger;
 
 import io.userwise.userwise_sdk.UserWise;
@@ -27,8 +25,8 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
         userWise.setSurveyListener(this);
         logger.info("UserWise Survey Listener Set");
 
-        userWise.setApiKey("6b6552ebc324a570262deb6bdd4e");
         userWise.setUserId("david-test-android1");
+        userWise.setApiKey("6b6552ebc324a570262deb6bdd4e");
         logger.info("API Key and User ID Set");
     }
 

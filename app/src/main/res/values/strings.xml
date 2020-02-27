@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">userwise_android_example</string>
+    <string name="force_refresh_surveys">Forcefully Refresh Surveys</string>
+    <string name="take_surveys">Take Surveys</string>
 </resources>
