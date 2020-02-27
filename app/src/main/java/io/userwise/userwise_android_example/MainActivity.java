@@ -2,6 +2,7 @@ package io.userwise.userwise_android_example;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -25,8 +26,14 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
         userWise.setSurveyListener(this);
         logger.info("UserWise Survey Listener Set");
 
-        userWise.setUserId("david-test-android1");
-        userWise.setApiKey("6b6552ebc324a570262deb6bdd4e");
+        Context context = this;
+        String apiKey = "6b6552ebc324a570262deb6bdd4e";
+        String userId = "userwise-example";
+
+        userWise.setContext(context);
+        userWise.setUserId(userId);
+        userWise.setApiKey(apiKey);
+        // or: userWise.initialize(context, apiKey, userId);
         logger.info("API Key and User ID Set");
     }
 
@@ -36,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
 
     public void takeNextSurvey(View view) {
         if (userWise.hasSurveysAvailable()) {
-            userWise.takeNextSurvey(this);
+            userWise.takeNextSurvey();
             return;
         }
 
