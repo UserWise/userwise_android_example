@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.logging.Logger;
@@ -12,64 +13,60 @@ import java.util.logging.Logger;
 import io.userwise.userwise_sdk.UserWise;
 import io.userwise.userwise_sdk.UserWiseSurveyListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements UserWiseSurveyListener {
     private static Logger logger = Logger.getLogger("userwise_example_app");
 
-    private UserWise userWiseSingleton = UserWise.INSTANCE;
+    private UserWise userWise = UserWise.INSTANCE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userWiseSingleton.setDebugMode(true);
-        userWiseSingleton.setParentContext(new WeakReference<Activity>(this));
-        userWiseSingleton.setSurveyListener(new UserWiseSurveyHandler());
+        userWise.setDebugMode(true);
+        userWise.setSurveyListener(this);
         logger.info("UserWise Survey Listener Set");
 
-        userWiseSingleton.setApiKey("6b6552ebc324a570262deb6bdd4e");
-        userWiseSingleton.setUserId("david-test-android1");
+        userWise.setApiKey("6b6552ebc324a570262deb6bdd4e");
+        userWise.setUserId("david-test-android1");
         logger.info("API Key and User ID Set");
     }
 
-    public void takeNextSurvey(View view) {
-        // Note: You can forcefully refresh if an appuser has available surveys
-        //if (!userWiseSingleton.hasSurveysAvailable()) {
-        //    userWiseSingleton.refreshHasAvailableSurveys();
-        //}
-
-        // Control when a user is taken into a survey
-        userWiseSingleton.takeNextSurvey();
+    public void forceRefreshHasSurveysAvailable(View view) {
+        userWise.refreshHasAvailableSurveys();
     }
 
-    class UserWiseSurveyHandler implements UserWiseSurveyListener {
-
-        @Override
-        public void onSurveyAvailable() {
-            MainActivity.logger.info("Surveys are available!");
-
-            // Take survey as soon as surveys are available
-            // userWiseSingleton.takeNextSurvey();
+    public void takeNextSurvey(View view) {
+        if (userWise.hasSurveysAvailable()) {
+            userWise.takeNextSurvey(this);
+            return;
         }
 
-        @Override
-        public void onSurveyClosed() {
-            MainActivity.logger.info("Survey has been closed!");
-        }
+        Toast.makeText(this, "No surveys available to take!", Toast.LENGTH_SHORT).show();
+    }
 
-        @Override
-        public void onSurveyCompleted() {
-            MainActivity.logger.info("Survey was completed successfully!");
-        }
+    @Override
+    public void onSurveyAvailable() {
+        Toast.makeText(this, "Surveys are available!", Toast.LENGTH_SHORT).show();
+    }
 
-        @Override
-        public void onSurveyEntered() {
-            MainActivity.logger.info("Survey is being entered into!");
-        }
+    @Override
+    public void onSurveyClosed() {
+        Toast.makeText(this, "Survey has been exited early!", Toast.LENGTH_SHORT).show();
+    }
 
-        @Override
-        public void onSurveyEnterFailed() {
-            MainActivity.logger.info("Survey failed to load!");
-        }
+    @Override
+    public void onSurveyCompleted() {
+        Toast.makeText(this, "Survey was successfully completed!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSurveyEntered() {
+        Toast.makeText(this, "Entering survey!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSurveyEnterFailed() {
+        Toast.makeText(this, "Survey failed to load!", Toast.LENGTH_SHORT).show();
     }
 }
