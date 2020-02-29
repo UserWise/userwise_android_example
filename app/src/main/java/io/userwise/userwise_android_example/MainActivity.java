@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
 
         Context context = this;
         String apiKey = "6b6552ebc324a570262deb6bdd4e";
-        String userId = "userwise-example";
+        String userId = "userwise-android-example";
 
         userWise.setContext(context);
         userWise.setUserId(userId);
@@ -51,27 +51,33 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
     }
 
     @Override
+    public void onSurveyEntered() {
+        // Called the very moment the loading of a survey has been started
+        Toast.makeText(this, "Entering survey!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onSurveyAvailable() {
+        // Called when surveys are available for the appuser
         Toast.makeText(this, "Surveys are available!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onSurveyClosed() {
-        Toast.makeText(this, "Survey has been exited early!", Toast.LENGTH_SHORT).show();
+        // Called when a survey view has been closed
+        // NOTE: May or may not be accompanied by onSurveyCompleted()
+        Toast.makeText(this, "Survey has been closed!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onSurveyCompleted() {
+        // Called when a survey has been successfully completed
         Toast.makeText(this, "Survey was successfully completed!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onSurveyEntered() {
-        Toast.makeText(this, "Entering survey!", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void onSurveyEnterFailed() {
+        // Called when a survey was unable to properly be loaded
         Toast.makeText(this, "Survey failed to load!", Toast.LENGTH_SHORT).show();
     }
 }
