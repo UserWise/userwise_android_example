@@ -63,6 +63,12 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
     }
 
     @Override
+    public void onSurveysUnavailable() {
+        // Called when no surveys are available for the appuser
+        Toast.makeText(this, "No surveys are available to take.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onSurveyClosed() {
         // Called when a survey view has been closed
         // NOTE: May or may not be accompanied by onSurveyCompleted()
