@@ -2,7 +2,6 @@ package io.userwise.userwise_android_example;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -26,14 +25,11 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
         userWise.setSurveyListener(this);
         logger.info("UserWise Survey Listener Set");
 
-        Context context = this;
-        String apiKey = "6b6552ebc324a570262deb6bdd4e";
-        String userId = "userwise-android-example";
-
-        userWise.setContext(context);
-        userWise.setUserId(userId);
-        userWise.setApiKey(apiKey);
+        userWise.setContext(this);
+        userWise.setUserId("userwise-android-example");
+        userWise.setApiKey("6b6552ebc324a570262deb6bdd4e");
         // or: userWise.initialize(context, apiKey, userId);
+
         logger.info("API Key and User ID Set");
     }
 
@@ -47,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
             return;
         }
 
-        Toast.makeText(this, "No surveys available to take!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Cannot take survey. No surveys to take!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
