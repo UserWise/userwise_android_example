@@ -1,7 +1,9 @@
 package io.userwise.userwise_android_example;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -30,6 +32,15 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
         userWise.setApiKey("6b6552ebc324a570262deb6bdd4e");
         // or: userWise.initialize(context, apiKey, userId);
 
+        // You can also update the styles of the loading screen. Uncomment to see the example app's
+        // overrides.
+        //int primaryColor = ContextCompat.getColor(this, R.color.userWisePrimaryColorOverride);
+        //int backgroundColor = ContextCompat.getColor(this, android.R.color.holo_orange_dark);
+        //userWise.setSplashScreenColors(primaryColor, backgroundColor);
+
+        //Drawable logo = ContextCompat.getDrawable(this, R.drawable.userwise_herowars_logo);
+        //userWise.setSplashScreenLogo(logo);
+
         logger.info("API Key and User ID Set");
     }
 
@@ -49,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
     @Override
     public void onSurveyEntered() {
         // Called the very moment the loading of a survey has been started
-        Toast.makeText(this, "Entering survey!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
