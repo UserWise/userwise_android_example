@@ -28,18 +28,18 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
         logger.info("UserWise Survey Listener Set");
 
         userWise.setContext(this);
-        userWise.setUserId("userwise-android-example4");
+        userWise.setUserId("userwise-android-example");
         userWise.setApiKey("6b6552ebc324a570262deb6bdd4e");
         // or: userWise.initialize(context, apiKey, userId);
 
         // You can also update the styles of the loading screen. Uncomment to see the example app's
         // overrides.
-        int primaryColor = ContextCompat.getColor(this, R.color.userWisePrimaryColorOverride);
-        int backgroundColor = ContextCompat.getColor(this, R.color.userWiseSplashScreenBackgroundColorOverride);
-        userWise.setColors(primaryColor, backgroundColor);
+        //int primaryColor = ContextCompat.getColor(this, R.color.userWisePrimaryColorOverride);
+        //int backgroundColor = ContextCompat.getColor(this, R.color.userWiseSplashScreenBackgroundColorOverride);
+        //userWise.setColors(primaryColor, backgroundColor);
 
-        Drawable logo = ContextCompat.getDrawable(this, R.drawable.userwise_herowars_logo);
-        userWise.setSplashScreenLogo(logo);
+        //Drawable logo = ContextCompat.getDrawable(this, R.drawable.userwise_herowars_logo);
+        //userWise.setSplashScreenLogo(logo);
 
         logger.info("API Key and User ID Set");
     }
