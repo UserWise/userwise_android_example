@@ -1,11 +1,11 @@
-# UserWise Android SDK Example
-UserWise Android SDK v1.0.0
+# UserWise SDK Android Example
 
-## v1.0.0
-- Initial Release (tentative)
+This repository hosts an example android application running the latest UserWise SDK release. Information on learning how to properly integrate with the SDK can be found in the documentation link below.
 
-#### Manual:
-Download the latest version of the [UserWise Android SDK]() and add the **.aar** archive to your application's `libs` folder. Then, add `implementation fileTree(dir: 'libs', include: ['*.aar'])`.
+## Links:
+- [UserWise Android SDK Documentation](https://docs.userwise.io/#android-sdk)
+- [UserWise iOS SDK](https://github.com/UserWise/userwise_ios_example)
 
-## Other platforms:
-[UserWise Android SDK Integration](https://github.com/userwise/userwise_android_example)
+## Versions
+### v0.1.1
+- Initial Release
