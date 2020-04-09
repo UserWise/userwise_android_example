@@ -5,7 +5,8 @@ This repository hosts an example android application running the latest UserWise
 ## Links:
 - [UserWise Android SDK Documentation](https://docs.userwise.io/#android-sdk)
 - [UserWise iOS SDK](https://github.com/UserWise/userwise_ios_example)
+- [UserWise Unity SDK](https://github.com/UserWise/userwise_unity_example)
 
 ## Versions
-### v0.1.1
-- Initial Release
+### v1.0.0
+- Initial Live-Ready Release
