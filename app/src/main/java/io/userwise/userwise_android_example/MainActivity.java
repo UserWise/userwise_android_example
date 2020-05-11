@@ -8,12 +8,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.logging.Logger;
 
 import io.userwise.userwise_sdk.UserWise;
+import io.userwise.userwise_sdk.UserWiseSurveyInviteHandler;
 import io.userwise.userwise_sdk.UserWiseSurveyListener;
 
-public class MainActivity extends AppCompatActivity implements UserWiseSurveyListener {
+public class MainActivity extends AppCompatActivity implements UserWiseSurveyListener, UserWiseSurveyInviteHandler {
     private static Logger logger = Logger.getLogger("userwise_example_app");
 
     private UserWise userWise = UserWise.INSTANCE;
@@ -29,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
 
         userWise.setContext(this);
         userWise.setUserId("userwise-android-example");
-        userWise.setApiKey("6b6552ebc324a570262deb6bdd4e");
+        userWise.setApiKey("fe6dc94555e366a36be767d6d937");
         // or: userWise.initialize(context, apiKey, userId);
 
         // You can also update the styles of the loading screen. Uncomment to see the example app's
@@ -49,12 +53,25 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
     }
 
     public void takeNextSurvey(View view) {
-        if (userWise.hasSurveysAvailable()) {
-            userWise.takeNextSurvey();
-            return;
-        }
+        try {
+            JSONObject attributes = new JSONObject()
+                    .put("favorite_color", "blue");
 
-        Toast.makeText(this, "Cannot take survey. No surveys to take!", Toast.LENGTH_SHORT).show();
+            userWise.assignEvent("event_logged_in", attributes);
+            userWise.setAttributes(attributes);
+        } catch (JSONException e) {}
+
+
+        userWise.initializeSurveyInvite(this);
+    }
+
+    @Override
+    public void onSurveyInviteInitialized(Boolean wasInitialized) {
+        // UserWise failed to start the survey initialization process. Don't show the survey invite
+        // dialog to the user.
+        if (!wasInitialized) { return; }
+
+        userWise.setSurveyInviteResponse(true);
     }
 
     @Override
@@ -64,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
 
     @Override
     public void onSurveyAvailable() {
+        if (userWise.isTakingSurvey()) { return; }
+
         // Called when surveys are available for the appuser
         Toast.makeText(this, "Surveys are available!", Toast.LENGTH_SHORT).show();
     }
