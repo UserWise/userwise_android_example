@@ -53,13 +53,12 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
     }
 
     public void takeNextSurvey(View view) {
-        try {
-            JSONObject attributes = new JSONObject()
-                    .put("favorite_color", "blue");
+        //try {
+            //JSONObject attributes = new JSONObject().put("favorite_color", "blue");
 
-            userWise.assignEvent("event_logged_in", attributes);
-            userWise.setAttributes(attributes);
-        } catch (JSONException e) {}
+            //userWise.assignEvent("event_logged_in", attributes);
+            //userWise.setAttributes(attributes);
+        //} catch (JSONException e) {}
 
 
         userWise.initializeSurveyInvite(this);
