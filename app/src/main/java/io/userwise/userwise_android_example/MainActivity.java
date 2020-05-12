@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
         logger.info("UserWise Survey Listener Set");
 
         userWise.setContext(this);
-        userWise.setUserId("userwise_video_demo12");
+        userWise.setUserId("userwise-android-example");
         userWise.setApiKey("2fac619fdeecba9f3fb3c7228406");
         // or: userWise.initialize(context, apiKey, userId);
 
