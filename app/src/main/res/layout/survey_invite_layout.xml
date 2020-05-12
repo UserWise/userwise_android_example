@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="414px"
+    android:layout_height="736px"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_corners">
+
+    <Button
+        android:id="@+id/start_survey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/offer_background"
+        android:layout_centerInParent="false"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="88px"
+        android:background="#00FFFFFF"
+        android:backgroundTintMode="add"
+        android:onClick="acceptSurveyInvite"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/close_survey_offer"
+        android:layout_width="75px"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="45px"
+        android:layout_marginEnd="15px"
+        android:background="#00FFFFFF"
+        android:onClick="declineSurveyInvite" />
+
+    <ImageView
+        android:background="@drawable/rounded_corners"
+        android:id="@+id/offer_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="The cheating way to add an offer image!"
+        android:scaleType="fitXY"
+        android:src="@drawable/trivia_crack" />
+</RelativeLayout>
