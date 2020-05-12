@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
         logger.info("UserWise Survey Listener Set");
 
         userWise.setContext(this);
-        userWise.setUserId("userwise_video_demo1");
+        userWise.setUserId("userwise_video_demo12");
         userWise.setApiKey("2fac619fdeecba9f3fb3c7228406");
         // or: userWise.initialize(context, apiKey, userId);
 
@@ -97,9 +97,10 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
 
     @Override
     public void onSurveyInviteInitialized(Boolean wasInitialized) {
-        // UserWise failed to start the survey initialization process. Don't show the survey invite
-        // dialog to the user.
-        if (!wasInitialized || userWise.isTakingSurvey()) { return; }
+        // wasInitialized=false
+        //     UserWise failed to start the survey initialization process. Don't show the survey
+        //     invite dialog to the user.
+        if (!wasInitialized) { return; }
 
         this.showSurveyOffer();
     }
