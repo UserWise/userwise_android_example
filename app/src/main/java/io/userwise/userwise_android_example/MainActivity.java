@@ -64,10 +64,6 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
         userWise.refreshHasAvailableSurveys();
     }
 
-    public void initializeSurveyInvite() {
-        userWise.initializeSurveyInvite(this);
-    }
-
     public void declineSurveyInvite(View view) {
         this.dismissSurveyOffer();
         userWise.setSurveyInviteResponse(false);
@@ -84,15 +80,24 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
         }
     }
 
+    private void initializeSurveyInvite() {
+        userWise.initializeSurveyInvite(this);
+    }
+
     private void showSurveyOffer() {
         if (this.surveyOffer == null) {
             this.surveyOffer = new Dialog(this);
             this.surveyOffer.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-            this.surveyOffer.getWindow().setLayout(414, 736);
             this.surveyOffer.setContentView(getLayoutInflater().inflate(R.layout.survey_invite_layout,null));
         }
 
         this.surveyOffer.show();
+    }
+
+    @Override
+    public void onSurveyAvailable() {
+        if (userWise.isTakingSurvey()) { return; }
+        this.initializeSurveyInvite();
     }
 
     @Override
@@ -111,14 +116,9 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
     }
 
     @Override
-    public void onSurveyAvailable() {
-        if (userWise.isTakingSurvey()) { return; }
-        this.initializeSurveyInvite();
-    }
-
-    @Override
     public void onSurveysUnavailable() {
         // Called when no surveys are available for the app user
+        Toast.makeText(this, "No surveys are available to take.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
