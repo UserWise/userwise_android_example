@@ -49,8 +49,9 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
         //userWise.setSplashScreenLogo(logo);
 
 
+        /** You can assign attributes and events from within your app **/
         //try {
-        //JSONObject attributes = new JSONObject().put("favorite_color", "blue");
+        //JSONObject attributes = new JSONObject().put("current_coins", 1000).put("current_diamonds": 20);
 
         //userWise.assignEvent("event_logged_in", attributes);
         //userWise.setAttributes(attributes);
