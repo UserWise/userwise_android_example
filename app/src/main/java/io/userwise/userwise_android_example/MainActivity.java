@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,9 +16,8 @@ import java.util.logging.Logger;
 
 import io.userwise.userwise_sdk.UserWise;
 import io.userwise.userwise_sdk.UserWiseSurveyInviteHandler;
-import io.userwise.userwise_sdk.UserWiseSurveyListener;
 
-public class MainActivity extends AppCompatActivity implements UserWiseSurveyListener, UserWiseSurveyInviteHandler {
+public class MainActivity extends AppCompatActivity implements  UserWiseSurveyInviteHandler {
     private static Logger logger = Logger.getLogger("userwise_example_app");
 
     private UserWise userWise = UserWise.INSTANCE;
@@ -30,35 +28,56 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Step 1) Set our debug mode, our survey listener, and provide an app context
         userWise.setDebugMode(true);
-        userWise.setSurveyListener(this);
-        logger.info("UserWise Survey Listener Set");
-
+        userWise.setSurveyListener(new ExampleSurveyListener(this, this.userWise));
         userWise.setContext(this);
-        userWise.setUserId("userwise-android-example");
-        userWise.setApiKey("2fac619fdeecba9f3fb3c7228406");
+
+        // Step 2) We set our app's api key and initialize the user by their _UNIQUE_ id.
+        userWise.setApiKey("6b6552ebc324a570262deb6bdd4e");
+        userWise.setUserId("userwise-android-example1");
         // or: userWise.initialize(context, apiKey, userId);
 
-        // You can also update the styles of the loading screen. Uncomment to see the example app's
-        // overrides.
+        // Step 3) We call the onStart lifecycle method
+        userWise.onStart();
+
+        // Step 4) We can override some of the loading screen designs (e.g. colors and logo)
+        //Drawable logo = ContextCompat.getDrawable(this, R.drawable.userwise_herowars_logo);
+        //userWise.setSplashScreenLogo(logo);
         //int primaryColor = ContextCompat.getColor(this, R.color.userWisePrimaryColorOverride);
         //int backgroundColor = ContextCompat.getColor(this, R.color.userWiseSplashScreenBackgroundColorOverride);
         //userWise.setColors(primaryColor, backgroundColor);
 
-        //Drawable logo = ContextCompat.getDrawable(this, R.drawable.userwise_herowars_logo);
-        //userWise.setSplashScreenLogo(logo);
-
-
-        /** You can assign attributes and events from within your app **/
+        // Step 5) You can assign your app user attributes and events directly within the SDK!
         //try {
-        //JSONObject attributes = new JSONObject().put("current_coins", 1000).put("current_diamonds": 20);
+          //JSONObject eventAttributes = new JSONObject().put("is_new_player", false);
+          //userWise.assignEvent("event_logged_in", eventAttributes);
 
-        //userWise.assignEvent("event_logged_in", attributes);
-        //userWise.setAttributes(attributes);
+          //JSONObject attributes = new JSONObject().put("current_coins", 1000).put("current_diamonds": 20);
+          //userWise.setAttributes(attributes);
         //} catch (JSONException e) {}
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        userWise.onStop();
+    }
 
-        logger.info("API Key and User ID Set");
+    @Override
+    protected void onResume() {
+        super.onResume();
+        userWise.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        userWise.onStop();
+    }
+
+    public void initializeSurveyInvite() {
+        userWise.initializeSurveyInvite(this);
     }
 
     public void forceRefreshHasSurveysAvailable(View view) {
@@ -81,10 +100,6 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
         }
     }
 
-    private void initializeSurveyInvite() {
-        userWise.initializeSurveyInvite(this);
-    }
-
     private void showSurveyOffer() {
         if (this.surveyOffer == null) {
             this.surveyOffer = new Dialog(this);
@@ -96,12 +111,6 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
     }
 
     @Override
-    public void onSurveyAvailable() {
-        if (userWise.isTakingSurvey()) { return; }
-        this.initializeSurveyInvite();
-    }
-
-    @Override
     public void onSurveyInviteInitialized(Boolean wasInitialized) {
         // wasInitialized=false
         //     UserWise failed to start the survey initialization process. Don't show the survey
@@ -109,35 +118,5 @@ public class MainActivity extends AppCompatActivity implements UserWiseSurveyLis
         if (!wasInitialized) { return; }
 
         this.showSurveyOffer();
-    }
-
-    @Override
-    public void onSurveyEntered() {
-        // Called the very moment the loading of a survey has been started
-    }
-
-    @Override
-    public void onSurveysUnavailable() {
-        // Called when no surveys are available for the app user
-        Toast.makeText(this, "No surveys are available to take.", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onSurveyClosed() {
-        // Called when a survey view has been closed
-        // NOTE: May or may not be accompanied by onSurveyCompleted()
-        Toast.makeText(this, "Survey has been closed!", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onSurveyEnterFailed() {
-        // Called when a survey was unable to properly be loaded
-        Toast.makeText(this, "Survey failed to load!", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onSurveyCompleted() {
-        // Called when a survey has been successfully completed
-        Toast.makeText(this, "Survey was successfully completed!", Toast.LENGTH_SHORT).show();
     }
 }
