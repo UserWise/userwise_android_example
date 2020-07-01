@@ -1,5 +1,7 @@
 # UserWise SDK Android Example
 
+[![Download](https://api.bintray.com/packages/theoremreach/maven/io.userwise.userwise_sdk/images/download.svg)](https://bintray.com/theoremreach/maven/io.userwise.userwise_sdk/)
+
 This repository hosts an example android application running the latest UserWise SDK release. Information on learning how to properly integrate with the SDK can be found in the documentation link below.
 
 ## Links:
