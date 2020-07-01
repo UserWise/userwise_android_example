@@ -8,5 +8,11 @@ This repository hosts an example android application running the latest UserWise
 - [UserWise Unity SDK](https://github.com/UserWise/userwise_unity_example)
 
 ## Versions
+### v1.2.0
+- Added new onStart and onPause lifecycle
+
+### v1.1.0 - v1.1.1
+- Beta changes + bug fixes
+
 ### v1.0.0
 - Initial Live-Ready Release
