@@ -3,6 +3,7 @@ package io.userwise.userwise_android_example;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -34,7 +35,9 @@ public class MainActivity extends AppCompatActivity implements  UserWiseSurveyIn
         userWise.setContext(this);
 
         // Step 2) We set our app's api key and initialize the user by their _UNIQUE_ id.
-        userWise.setApiKey("6b6552ebc324a570262deb6bdd4e");
+        userWise.setApiKey("f0d040021dcb9f26765e25da6b57");
+
+        // **psst** if you have no surveys available, change the user id below :-)
         userWise.setUserId("userwise-android-example-user");
         // or: userWise.initialize(context, apiKey, userId);
 
@@ -108,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements  UserWiseSurveyIn
         }
 
         this.surveyOffer.show();
+        this.surveyOffer.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
     }
 
     @Override

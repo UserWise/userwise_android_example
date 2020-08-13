@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#00207D</color>
     <color name="colorAccent">#F2F6FF</color>
 
+    <color name="surveyInviteBg">#070A27</color>
+    <color name="surveyInviteLightBlue">#AEFFFF</color>
+
     <color name="userWisePrimaryColorOverride">#930ad0</color>
     <color name="userWiseSplashScreenBackgroundColorOverride">#faae48</color>
 </resources>

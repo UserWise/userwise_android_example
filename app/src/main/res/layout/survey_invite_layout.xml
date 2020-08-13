@@ -1,46 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/surveyInviteBg">
 
-    <Button
-        android:id="@+id/start_survey"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignStart="@id/offer_background"
-        android:layout_alignEnd="@id/offer_background"
-        android:layout_alignBottom="@id/offer_background"
-        android:layout_centerInParent="false"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
-        android:background="#00FFFFFF"
-        android:backgroundTintMode="add"
-        android:onClick="acceptSurveyInvite"
-        android:textColor="#FFFFFF" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-150dip"
+        android:src="@drawable/background_lines" />
 
-    <Button
+    <ImageButton
         android:id="@+id/close_survey_offer"
-        android:layout_width="75dp"
-        android:layout_height="50dp"
-        android:layout_alignTop="@id/offer_background"
-        android:layout_alignEnd="@id/offer_background"
-        android:layout_alignParentEnd="false"
-        android:layout_marginTop="45dp"
-        android:layout_marginEnd="25dp"
-        android:background="#00FFFFFF"
-        android:minWidth="0dip"
-        android:minHeight="0dip"
+        android:background="@drawable/close"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dip"
+        android:layout_marginEnd="10dip"
         android:onClick="declineSurveyInvite" />
 
     <ImageView
-        android:id="@+id/offer_background"
+        android:id="@+id/logo"
+        android:src="@drawable/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dip"
+        android:layout_marginHorizontal="30dip"
         android:adjustViewBounds="true"
-        android:background="@drawable/rounded_corners"
-        android:contentDescription="The cheating way to add an offer image!"
-        android:cropToPadding="false"
-        android:scaleType="fitCenter"
-        android:src="@drawable/trivia_crack" />
+        android:scaleType="fitCenter" />
+
+    <RelativeLayout
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/blue_marker" />
+
+        <ImageView
+            android:id="@+id/coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/coin" />
+
+        <TextView
+            android:id="@+id/how_are_we_doing_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/coin"
+            android:layout_marginTop="20dip"
+            android:textSize="20sp"
+            android:textColor="@color/surveyInviteLightBlue"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:text="HOW ARE WE DOING?" />
+
+        <TextView
+            android:id="@+id/let_us_know_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/how_are_we_doing_text"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:text="Let us know and get +10 Coins!" />
+
+        <Button
+            android:id="@+id/start_survey"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/let_us_know_text"
+            android:layout_marginTop="20dip"
+            android:layout_marginHorizontal="40dip"
+            android:background="@drawable/rounded_button"
+            android:backgroundTintMode="add"
+            android:onClick="acceptSurveyInvite"
+            android:text="Get Started"
+            android:textStyle="bold"
+            android:textColor="@color/surveyInviteBg"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start_survey"
+            android:layout_marginTop="40dip"
+            android:src="@drawable/purple_marker" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dip"
+        android:scaleType="center"
+        android:src="@drawable/coins" />
 </RelativeLayout>
