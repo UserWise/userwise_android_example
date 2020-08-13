@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements  UserWiseSurveyIn
 
         // Step 2) We set our app's api key and initialize the user by their _UNIQUE_ id.
         userWise.setApiKey("6b6552ebc324a570262deb6bdd4e");
-        userWise.setUserId("userwise-android-example1");
+        userWise.setUserId("userwise-android-example-user");
         // or: userWise.initialize(context, apiKey, userId);
 
         // Step 3) We call the onStart lifecycle method
@@ -50,11 +50,11 @@ public class MainActivity extends AppCompatActivity implements  UserWiseSurveyIn
 
         // Step 5) You can assign your app user attributes and events directly within the SDK!
         //try {
-          //JSONObject eventAttributes = new JSONObject().put("is_new_player", false);
-          //userWise.assignEvent("event_logged_in", eventAttributes);
+        //JSONObject eventAttributes = new JSONObject().put("is_new_player", false);
+        //userWise.assignEvent("event_logged_in", eventAttributes);
 
-          //JSONObject attributes = new JSONObject().put("current_coins", 1000).put("current_diamonds": 20);
-          //userWise.setAttributes(attributes);
+        //JSONObject attributes = new JSONObject().put("current_coins", 1000).put("current_diamonds": 20);
+        //userWise.setAttributes(attributes);
         //} catch (JSONException e) {}
     }
 
