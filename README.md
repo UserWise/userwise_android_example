@@ -10,6 +10,12 @@ This repository hosts an example android application running the latest UserWise
 - [UserWise Unity SDK](https://github.com/UserWise/userwise_unity_example)
 
 ## Versions
+### v1.2.2
+- Removed the ability to press the "Back Button" to close out of the "Take Survey" screen early.
+
+### v1.2.1
+- Google Ads dependency is now marked as compileOnly internally, meaning the dependency is optional.
+
 ### v1.2.0
 - Added new onStart and onPause lifecycle
 
