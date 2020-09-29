@@ -15,12 +15,15 @@ import org.json.JSONObject;
 
 import java.util.logging.Logger;
 
+import io.userwise.userwise_android_example.offers.ExampleOfferHandler;
+import io.userwise.userwise_android_example.surveys.ExampleSurveyHandler;
 import io.userwise.userwise_sdk.UserWise;
-import io.userwise.userwise_sdk.UserWiseSurveyInviteHandler;
+import io.userwise.userwise_sdk.offers.OffersModule;
+import io.userwise.userwise_sdk.surveys.SurveyInviteListener;
+import io.userwise.userwise_sdk.surveys.SurveysModule;
 
-public class MainActivity extends AppCompatActivity implements  UserWiseSurveyInviteHandler {
+public class MainActivity extends AppCompatActivity implements SurveyInviteListener {
     private static Logger logger = Logger.getLogger("userwise_example_app");
-
     private UserWise userWise = UserWise.INSTANCE;
     private Dialog surveyOffer;
 
@@ -29,36 +32,34 @@ public class MainActivity extends AppCompatActivity implements  UserWiseSurveyIn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Step 1) Set our debug mode, our survey listener, and provide an app context
-        userWise.setDebugMode(true);
-        userWise.setSurveyListener(new ExampleSurveyListener(this, this.userWise));
+        // Step 1) Set session-based UserWise configuration
         userWise.setContext(this);
+        userWise.setDebugMode(true);
+        userWise.setUserId("zed-zed-zed-zed-zedsdfasdf");
+        userWise.setApiKey("0af5b8279d1ae000b2f4836fa7e0");
+        userWise.setLocalhostOverride("192.168.1.77:3000"); // TODO: REMOVE ME :-)
 
-        // Step 2) We set our app's api key and initialize the user by their _UNIQUE_ id.
-        userWise.setApiKey("f0d040021dcb9f26765e25da6b57");
+        // Step 2) Configure any modules you'd like to use (e.g. surveys & offers)
+        Drawable logo = ContextCompat.getDrawable(this, R.drawable.userwise_herowars_logo);
+        int primaryColor = ContextCompat.getColor(this, R.color.userWisePrimaryColorOverride);
+        int backgroundColor = ContextCompat.getColor(this, R.color.userWiseSplashScreenBackgroundColorOverride);
 
-        // **psst** if you have no surveys available, change the user id below :-)
-        userWise.setUserId("userwise-android-example-user");
-        // or: userWise.initialize(context, apiKey, userId);
+        SurveysModule surveysModule = userWise.getSurveysModule();
+        surveysModule.setSurveyListener(new ExampleSurveyHandler(this));
+        surveysModule.setSplashScreenLogo(logo);
+        surveysModule.setColors(primaryColor, backgroundColor);
 
-        // Step 3) We call the onStart lifecycle method
-        userWise.onStart();
+        OffersModule offersModule = userWise.getOffersModule();
+        offersModule.setOfferListener(new ExampleOfferHandler());
 
-        // Step 4) We can override some of the loading screen designs (e.g. colors and logo)
-        //Drawable logo = ContextCompat.getDrawable(this, R.drawable.userwise_herowars_logo);
-        //userWise.setSplashScreenLogo(logo);
-        //int primaryColor = ContextCompat.getColor(this, R.color.userWisePrimaryColorOverride);
-        //int backgroundColor = ContextCompat.getColor(this, R.color.userWiseSplashScreenBackgroundColorOverride);
-        //userWise.setColors(primaryColor, backgroundColor);
+        // Step 4) Finally, you can assign your app user attributes and events directly within the SDK!
+        try {
+        JSONObject eventAttributes = new JSONObject().put("is_new_player", false);
+        userWise.assignEvent("event_logged_in", eventAttributes);
 
-        // Step 5) You can assign your app user attributes and events directly within the SDK!
-        //try {
-        //JSONObject eventAttributes = new JSONObject().put("is_new_player", false);
-        //userWise.assignEvent("event_logged_in", eventAttributes);
-
-        //JSONObject attributes = new JSONObject().put("current_coins", 1000).put("current_diamonds": 20);
-        //userWise.setAttributes(attributes);
-        //} catch (JSONException e) {}
+        JSONObject attributes = new JSONObject().put("current_coins", 1000).put("current_diamonds", 20);
+        userWise.setAttributes(attributes);
+        } catch (JSONException e) {}
     }
 
     @Override
@@ -79,31 +80,27 @@ public class MainActivity extends AppCompatActivity implements  UserWiseSurveyIn
         userWise.onStop();
     }
 
-    public void initializeSurveyInvite() {
-        userWise.initializeSurveyInvite(this);
-    }
-
     public void forceRefreshHasSurveysAvailable(View view) {
-        userWise.refreshHasAvailableSurveys();
+        userWise.forcePollRequest();
     }
 
     public void declineSurveyInvite(View view) {
         this.dismissSurveyOffer();
-        userWise.setSurveyInviteResponse(false);
+        userWise.getSurveysModule().setSurveyInviteResponse(false);
     }
 
     public void acceptSurveyInvite(View view) {
         this.dismissSurveyOffer();
-        userWise.setSurveyInviteResponse(true);
+        userWise.getSurveysModule().setSurveyInviteResponse(true);
     }
 
-    private void dismissSurveyOffer() {
+    public void dismissSurveyOffer() {
         if (this.surveyOffer != null) {
             this.surveyOffer.dismiss();
         }
     }
 
-    private void showSurveyOffer() {
+    public void showSurveyOffer() {
         if (this.surveyOffer == null) {
             this.surveyOffer = new Dialog(this);
             this.surveyOffer.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -112,15 +109,5 @@ public class MainActivity extends AppCompatActivity implements  UserWiseSurveyIn
 
         this.surveyOffer.show();
         this.surveyOffer.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
-    }
-
-    @Override
-    public void onSurveyInviteInitialized(Boolean wasInitialized) {
-        // wasInitialized=false
-        //     UserWise failed to start the survey initialization process. Don't show the survey
-        //     invite dialog to the user.
-        if (!wasInitialized) { return; }
-
-        this.showSurveyOffer();
     }
 }

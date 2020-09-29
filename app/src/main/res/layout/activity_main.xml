@@ -16,4 +16,5 @@
         android:textColor="@color/colorPrimary"
         android:onClick="forceRefreshHasSurveysAvailable"
         android:text="@string/force_refresh_surveys" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>
