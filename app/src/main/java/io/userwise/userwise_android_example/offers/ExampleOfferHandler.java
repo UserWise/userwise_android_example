@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 import io.userwise.userwise_sdk.UserWise;
-import io.userwise.userwise_sdk.offers.Bundle;
 import io.userwise.userwise_sdk.offers.OfferEventListener;
 import io.userwise.userwise_sdk.offers.OfferImpression;
 import io.userwise.userwise_sdk.offers.OfferImpressionState;
@@ -55,20 +54,24 @@ public class ExampleOfferHandler implements OfferEventListener {
     }
 
     @Override
-    public void onOfferViewed(@NotNull OfferImpression offerImpression, @NotNull Bundle bundle) {
+    public void onOfferViewed(@NotNull OfferImpression offerImpression) {
         Log.d(TAG, "Offer has loaded and is actively visible!");
     }
 
     @Override
-    public void onOfferDismissed(@NotNull OfferImpression offerImpression, @NotNull Bundle bundleData) {
+    public void onOfferDismissed(@NotNull OfferImpression offerImpression) {
         Log.d(TAG, "Offer was dismissed!");
     }
 
     @Override
-    public void onOfferAccepted(@NotNull OfferImpression offerImpression, @NotNull Bundle bundleData) {
+    public void onOfferAccepted(@NotNull OfferImpression offerImpression) {
         Log.d(TAG, "Offer was accepted!");
 
-        JSONObject bundleContent = bundleData.getContents();
+        String productId = offerImpression.getOffer().getAndroidProductId();
+        Double cost = offerImpression.getOffer().getCost();
+        JSONObject bundleContent = offerImpression.getOffer().getCurrencies();
+        assert bundleContent != null;
+
         Iterator<String> it = bundleContent.keys();
 
         StringBuilder str = new StringBuilder();
@@ -76,11 +79,12 @@ public class ExampleOfferHandler implements OfferEventListener {
             String currencyId = it.next();
             int currencyAmount = bundleContent.optInt(currencyId, 0);
 
-            str.append(currencyAmount).append(" ").append(currencyId).append("\n");
+            str.append(currencyAmount).append("   * ").append(currencyId).append("\n");
         }
 
+        Log.d(TAG, "Offer Product Id: " + productId);
+        Log.d(TAG, "Offer Cost: " + cost.toString());
         Log.d(TAG, "Bundle Contains: \n" + str.toString());
-        Log.d(TAG, "Raw Bundle Contents: \n" + bundleContent.toString());
 
         // Once an offer has been accepted the itself impression will stay in a state of "accepted"
         // on the UserWise servers.  There are currently two possible states beyond "accepted":
