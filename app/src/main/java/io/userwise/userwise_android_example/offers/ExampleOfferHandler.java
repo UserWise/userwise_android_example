@@ -96,7 +96,7 @@ public class ExampleOfferHandler implements OfferEventListener {
         // Examples:
 
         // 1. You display buy screen. User purchases. You call:
-        //offerImpression.updateState(OfferImpressionState.PURCHASED);
+        offerImpression.updateState(OfferImpressionState.PURCHASED);
 
         // 2. You display the buy screen (or maybe that itself fails). User does not purchase. You call:
         //offerImpression.updateState(OfferImpressionState.PURCHASE_FAILED);

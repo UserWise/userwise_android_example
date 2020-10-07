@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements SurveyInviteListe
         // Step 1) Set session-based UserWise configuration
         userWise.setContext(this);
         userWise.setDebugMode(true);
-        userWise.setUserId("zed-zed-zed-zed-zedsdfasdf");
+        userWise.setUserId("zed-zed-zed-zed-zedsdfasdff");
         userWise.setApiKey("0af5b8279d1ae000b2f4836fa7e0");
         userWise.setLocalhostOverride("192.168.1.77:3000"); // TODO: REMOVE ME :-)
 
