@@ -37,7 +37,6 @@ public class ExampleOfferHandler implements OfferEventListener {
     public void onOfferImpressionInitialized(@NotNull OfferImpression offerImpression) {
         Log.d(TAG, "Offer impression initialized! Offer impression id " + offerImpression.getId());
         UserWise.INSTANCE.getOffersModule().showOffer(offerImpression);
-
         // Above, we tell the UserWise SDK to show the offer, as it was built in our dashboard.
         // However, if you find yourself wanting a data-only approach, you can hook into-and out of-
         // the UserWise OffersModule event flow, at any point.

@@ -19,10 +19,9 @@ import io.userwise.userwise_android_example.offers.ExampleOfferHandler;
 import io.userwise.userwise_android_example.surveys.ExampleSurveyHandler;
 import io.userwise.userwise_sdk.UserWise;
 import io.userwise.userwise_sdk.offers.OffersModule;
-import io.userwise.userwise_sdk.surveys.SurveyInviteListener;
 import io.userwise.userwise_sdk.surveys.SurveysModule;
 
-public class MainActivity extends AppCompatActivity implements SurveyInviteListener {
+public class MainActivity extends AppCompatActivity {
     private static Logger logger = Logger.getLogger("userwise_example_app");
     private UserWise userWise = UserWise.INSTANCE;
     private Dialog surveyOffer;
@@ -35,9 +34,9 @@ public class MainActivity extends AppCompatActivity implements SurveyInviteListe
         // Step 1) Set session-based UserWise configuration
         userWise.setContext(this);
         userWise.setDebugMode(true);
-        userWise.setUserId("zed-zed-zed-zed-zedsdfasdff");
+        userWise.setUserId("example-android-user");
         userWise.setApiKey("0af5b8279d1ae000b2f4836fa7e0");
-        userWise.setLocalhostOverride("192.168.1.77:3000"); // TODO: REMOVE ME :-)
+        userWise.setLocalhostOverride("192.168.0.134:3000"); // TODO: REMOVE ME :-)
 
         // Step 2) Configure any modules you'd like to use (e.g. surveys & offers)
         Drawable logo = ContextCompat.getDrawable(this, R.drawable.userwise_herowars_logo);
@@ -54,11 +53,11 @@ public class MainActivity extends AppCompatActivity implements SurveyInviteListe
 
         // Step 4) Finally, you can assign your app user attributes and events directly within the SDK!
         try {
-        JSONObject eventAttributes = new JSONObject().put("is_new_player", false);
-        userWise.assignEvent("event_logged_in", eventAttributes);
+            JSONObject eventAttributes = new JSONObject().put("is_new_player", false);
+            userWise.assignEvent("event_logged_in", eventAttributes);
 
-        JSONObject attributes = new JSONObject().put("current_coins", 1000).put("current_diamonds", 20);
-        userWise.setAttributes(attributes);
+            JSONObject attributes = new JSONObject().put("current_coins", 1000).put("current_diamonds", 20);
+            userWise.setAttributes(attributes);
         } catch (JSONException e) {}
     }
 
