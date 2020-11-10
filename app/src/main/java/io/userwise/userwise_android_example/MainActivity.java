@@ -31,14 +31,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Step 1) Set session-based UserWise configuration
+        // Step 1) UserWise SDK Configuration
         userWise.setContext(this);
         userWise.setDebugMode(true);
         userWise.setUserId("example-android-user");
         userWise.setApiKey("0af5b8279d1ae000b2f4836fa7e0");
         userWise.setLocalhostOverride("192.168.0.134:3000"); // TODO: REMOVE ME :-)
+    }
 
-        // Step 2) Configure any modules you'd like to use (e.g. surveys & offers)
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Step 2) Starting/Stopping The SDK
+        userWise.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Step 2) Starting/Stopping The SDK
+        userWise.onStart();
+
+        // Step 3) Configure any modules you'd like to use (e.g. surveys & offers)
         Drawable logo = ContextCompat.getDrawable(this, R.drawable.userwise_herowars_logo);
         int primaryColor = ContextCompat.getColor(this, R.color.userWisePrimaryColorOverride);
         int backgroundColor = ContextCompat.getColor(this, R.color.userWiseSplashScreenBackgroundColorOverride);
@@ -51,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         OffersModule offersModule = userWise.getOffersModule();
         offersModule.setOfferListener(new ExampleOfferHandler());
 
-        // Step 4) Finally, you can assign your app user attributes and events directly within the SDK!
+        // Step 4) Finally, you can also assign your app user attributes and events directly within the SDK!
         try {
             JSONObject eventAttributes = new JSONObject().put("is_new_player", false);
             userWise.assignEvent("event_logged_in", eventAttributes);
@@ -59,18 +75,6 @@ public class MainActivity extends AppCompatActivity {
             JSONObject attributes = new JSONObject().put("current_coins", 1000).put("current_diamonds", 20);
             userWise.setAttributes(attributes);
         } catch (JSONException e) {}
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        userWise.onStop();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        userWise.onStart();
     }
 
     @Override
