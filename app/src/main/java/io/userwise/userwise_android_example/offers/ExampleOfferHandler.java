@@ -78,7 +78,7 @@ public class ExampleOfferHandler implements OfferEventListener {
             String currencyId = it.next();
             int currencyAmount = bundleContent.optInt(currencyId, 0);
 
-            str.append(currencyAmount).append("   * ").append(currencyId).append("\n");
+            str.append("   * ").append(currencyAmount).append(currencyId).append("\n");
         }
 
         Log.d(TAG, "Offer Product Id: " + productId);

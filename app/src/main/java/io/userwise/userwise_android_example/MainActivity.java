@@ -36,22 +36,18 @@ public class MainActivity extends AppCompatActivity {
         userWise.setDebugMode(true);
         userWise.setUserId("example-android-user");
         userWise.setApiKey("0af5b8279d1ae000b2f4836fa7e0");
-        userWise.setLocalhostOverride("192.168.0.134:3000"); // TODO: REMOVE ME :-)
+        userWise.setLocalhostOverride("192.168.1.163:3000"); // TODO: REMOVE ME :-)
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
-        // Step 2) Starting/Stopping The SDK
         userWise.onStop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        // Step 2) Starting/Stopping The SDK
         userWise.onStart();
 
         // Step 3) Configure any modules you'd like to use (e.g. surveys & offers)
