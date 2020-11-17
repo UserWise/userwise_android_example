@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         userWise.setDebugMode(true);
         userWise.setUserId("example-android-user");
         userWise.setApiKey("0af5b8279d1ae000b2f4836fa7e0");
-        userWise.setLocalhostOverride("192.168.1.163:3000"); // TODO: REMOVE ME :-)
     }
 
     @Override
