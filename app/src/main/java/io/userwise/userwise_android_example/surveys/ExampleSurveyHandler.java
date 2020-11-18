@@ -17,9 +17,9 @@ public class ExampleSurveyHandler implements SurveyEventListener {
     }
 
     @Override
-    public void onSurveyAvailable() {
+    public void onSurveyAvailable(String surveyResponseId) {
         if (userWise.getSurveysModule().isTakingSurvey()) { return; }
-        userWise.getSurveysModule().initializeSurveyInvite();
+        userWise.getSurveysModule().initializeSurveyInvite(surveyResponseId);
     }
 
     @Override
@@ -29,34 +29,34 @@ public class ExampleSurveyHandler implements SurveyEventListener {
     }
 
     @Override
-    public void onSurveyInviteInitialized(Boolean wasInitialized) {
+    public void onSurveyInviteInitialized(Boolean wasInitialized, String surveyResponseId, String surveyInviteId) {
         // wasInitialized=false
         //     UserWise failed to start the survey initialization process. Don't show the survey
         //     invite dialog to the user.
         if (!wasInitialized) { return; }
-        mainActivity.showSurveyOffer();
+        mainActivity.showSurveyOffer(surveyResponseId, surveyInviteId);
     }
 
     @Override
-    public void onSurveyEnterFailed() {
+    public void onSurveyEnterFailed(String surveyResponseId) {
         // Called when a survey was unable to be loaded properly
         Toast.makeText(mainActivity, "Survey failed to load!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onSurveyEntered() {
+    public void onSurveyEntered(String surveyResponseId) {
         // Called once the survey has finished rendering for the user
     }
 
     @Override
-    public void onSurveyClosed() {
+    public void onSurveyClosed(String surveyResponseId) {
         // Called when a survey view has been closed
         // NOTE: May or may not be accompanied by onSurveyCompleted()
         Toast.makeText(mainActivity, "Survey has been closed!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onSurveyCompleted() {
+    public void onSurveyCompleted(String surveyResponseId) {
         // Called when a survey has been successfully completed
         Toast.makeText(mainActivity, "Survey was successfully completed!", Toast.LENGTH_SHORT).show();
     }

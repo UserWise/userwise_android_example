@@ -7,6 +7,7 @@ import android.app.ActionBar;
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private UserWise userWise = UserWise.INSTANCE;
     private Dialog surveyOffer;
 
+    private String surveyResponseId;
+    private String surveyInviteId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         // Step 1) UserWise SDK Configuration
         userWise.setContext(this);
         userWise.setDebugMode(true);
-        userWise.setUserId("example-android-user");
-        userWise.setApiKey("0af5b8279d1ae000b2f4836fa7e0");
+        userWise.setUserId("userwise-demo-app-user-android1sdafzs");
+        userWise.setApiKey("2fac619fdeecba9f3fb3c7228406");
     }
 
     @Override
@@ -83,26 +87,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void declineSurveyInvite(View view) {
-        this.dismissSurveyOffer();
-        userWise.getSurveysModule().setSurveyInviteResponse(false);
+        String surveyResponseId = this.surveyResponseId;
+        String surveyInviteId = this.surveyInviteId;
+        Log.d("UserWiseExample", surveyResponseId);
+        userWise.getSurveysModule().setSurveyInviteResponse(surveyResponseId, surveyInviteId, false);
+        this.dismissSurveyInvite();
     }
 
     public void acceptSurveyInvite(View view) {
-        this.dismissSurveyOffer();
-        userWise.getSurveysModule().setSurveyInviteResponse(true);
+        String surveyResponseId = this.surveyResponseId;
+        String surveyInviteId = this.surveyInviteId;
+        userWise.getSurveysModule().setSurveyInviteResponse(surveyResponseId, surveyInviteId, true);
+        this.dismissSurveyInvite();
     }
 
-    public void dismissSurveyOffer() {
+    public void dismissSurveyInvite() {
         if (this.surveyOffer != null) {
+            this.surveyResponseId = null;
+            this.surveyInviteId = null;
             this.surveyOffer.dismiss();
+            this.surveyOffer = null;
         }
     }
 
-    public void showSurveyOffer() {
+    public void showSurveyOffer(String surveyResponseId, String surveyInviteId) {
         if (this.surveyOffer == null) {
             this.surveyOffer = new Dialog(this);
             this.surveyOffer.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
             this.surveyOffer.setContentView(getLayoutInflater().inflate(R.layout.survey_invite_layout,null));
+
+            this.surveyResponseId = surveyResponseId;
+            this.surveyInviteId = surveyInviteId;
         }
 
         this.surveyOffer.show();
