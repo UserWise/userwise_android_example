@@ -1,4 +1,4 @@
-package io.userwise.userwise_android_example.offers;
+package io.userwise.userwise_android_example;
 
 import android.util.Log;
 
@@ -20,7 +20,7 @@ public class ExampleOfferHandler implements OfferEventListener {
     @Override
     public void onOfferAvailable(@NotNull String offerId) {
         Log.d(TAG, "Offer is available! Initializing offer with id " + offerId);
-        UserWise.INSTANCE.getOffersModule().initializeOfferImpression(offerId);
+        UserWise.INSTANCE.getOffers().initializeOfferImpression(offerId);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ExampleOfferHandler implements OfferEventListener {
     @Override
     public void onOfferImpressionInitialized(@NotNull OfferImpression offerImpression) {
         Log.d(TAG, "Offer impression initialized! Offer impression id " + offerImpression.getId());
-        UserWise.INSTANCE.getOffersModule().showOffer(offerImpression);
+        UserWise.INSTANCE.getOffers().showOffer(offerImpression);
         // Above, we tell the UserWise SDK to show the offer, as it was built in our dashboard.
         // However, if you find yourself wanting a data-only approach, you can hook into-and out of-
         // the UserWise OffersModule event flow, at any point.

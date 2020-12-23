@@ -1,4 +1,4 @@
-package io.userwise.userwise_android_example.surveys;
+package io.userwise.userwise_android_example;
 
 import android.widget.Toast;
 
@@ -18,8 +18,8 @@ public class ExampleSurveyHandler implements SurveyEventListener {
 
     @Override
     public void onSurveyAvailable(String surveyResponseId) {
-        if (userWise.getSurveysModule().isTakingSurvey()) { return; }
-        userWise.getSurveysModule().initializeSurveyInvite(surveyResponseId);
+        if (userWise.getSurveys().isTakingSurvey()) { return; }
+        userWise.getSurveys().initializeSurveyInvite(surveyResponseId);
     }
 
     @Override
