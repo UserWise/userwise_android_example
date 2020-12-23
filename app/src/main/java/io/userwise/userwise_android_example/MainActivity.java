@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         // Step 1) UserWise SDK Configuration
         userWise.setContext(this);
         userWise.setDebugMode(true);
-        userWise.setHostOverride("staging.userwise.io"); // (uncomment me for staging)
+        userWise.setHostOverride("staging.userwise.io"); // (staging)
         userWise.setUserId("userwise-demo-app-user-android");
         userWise.setApiKey("f1535363ad9ab340ebc9786337b0"); // (staging)
 
