@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 import io.userwise.userwise_sdk.UserWise;
+import io.userwise.userwise_sdk.offers.Offer;
 import io.userwise.userwise_sdk.offers.OfferEventListener;
 import io.userwise.userwise_sdk.offers.OfferImpression;
 import io.userwise.userwise_sdk.offers.OfferImpressionState;
@@ -18,9 +19,14 @@ public class ExampleOfferHandler implements OfferEventListener {
     private String TAG = getClass().getName();
 
     @Override
-    public void onOfferAvailable(@NotNull String offerId) {
-        Log.d(TAG, "Offer is available! Initializing offer with id " + offerId);
-        UserWise.INSTANCE.getOffers().initializeOfferImpression(offerId);
+    public void onOffersLoaded(@NotNull boolean fromCache) {
+        Log.d(TAG, "Offers have been loaded... From cache? " + fromCache);
+    }
+
+    @Override
+    public void onOfferAvailable(@NotNull Offer offer) {
+        Log.d(TAG, "Offer is available! Initializing offer with id " + offer.getId());
+        UserWise.INSTANCE.getOffers().initializeOfferImpression(offer);
     }
 
     @Override
@@ -66,13 +72,13 @@ public class ExampleOfferHandler implements OfferEventListener {
     public void onOfferAccepted(@NotNull OfferImpression offerImpression) {
         Log.d(TAG, "Offer was accepted!");
 
-        String productId = offerImpression.getOffer().getAndroidProductId();
-        Double cost = offerImpression.getOffer().getCost();
-        JSONObject bundleContent = offerImpression.getOffer().getCurrencies();
-        assert bundleContent != null;
+        Offer offer = offerImpression.getOffer();
+
+        String productId = offer.getAndroidProductId();
+        Double cost = offer.getCost();
+        JSONObject bundleContent = offer.getCurrencies();
 
         Iterator<String> it = bundleContent.keys();
-
         StringBuilder str = new StringBuilder();
         while (it.hasNext()) {
             String currencyId = it.next();
@@ -81,6 +87,7 @@ public class ExampleOfferHandler implements OfferEventListener {
             str.append("   * ").append(currencyAmount).append(currencyId).append("\n");
         }
 
+        Log.d(TAG, "Offer Name: " + offer.getName());
         Log.d(TAG, "Offer Product Id: " + productId);
         Log.d(TAG, "Offer Cost: " + cost.toString());
         Log.d(TAG, "Bundle Contains: \n" + str.toString());
