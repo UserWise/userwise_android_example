@@ -26,6 +26,7 @@ import io.userwise.userwise_sdk.MediaRawDataHandler;
 import io.userwise.userwise_sdk.events.EventsModule;
 import io.userwise.userwise_sdk.offers.OffersModule;
 import io.userwise.userwise_sdk.surveys.SurveysModule;
+import io.userwise.userwise_sdk.messages.MessagesModule;
 import io.userwise.userwise_sdk.surveys.Survey;
 import io.userwise.userwise_sdk.variables.BooleanVariable;
 import io.userwise.userwise_sdk.variables.DateTimeVariable;
@@ -92,9 +93,12 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         // UserWise SDK 'Global' Configuration
         userWise.setContext(this);
         userWise.setDebugMode(true);
-        userWise.setHttpSchemeOverride("https");
-        userWise.setHostOverride("staging.userwise.io"); // (staging)
-        userWise.setApiKey("f1535363ad9ab340ebc9786337b0"); // (staging)
+//        userWise.setHttpSchemeOverride("https");
+        userWise.setHttpSchemeOverride("http");
+//        userWise.setHostOverride("staging.userwise.io"); // (staging)
+        userWise.setHostOverride("10.0.2.2:3000");
+//        userWise.setApiKey("f1535363ad9ab340ebc9786337b0"); // (staging)
+        userWise.setApiKey("1ce8092b0732d711e7c22108b2cd");
         userWise.setUserId("userwise-demo-app-user-android");
 
         // UserWise SDK 'Module' Configuration
@@ -112,6 +116,9 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
 
         OffersModule offersModule = userWise.getOffers();
         offersModule.setOfferListener(new ExampleOfferHandler());
+
+        MessagesModule messagesModule = userWise.getMessages();
+        messagesModule.setMessageListener(new ExampleMessageHandler(this));
 
         VariablesModule variablesModule = userWise.getVariables();
         variablesModule.defineVariables(new Variable[]{ maxLevel, enableThingA, startThisThingAt, title, exchangeRate, headerImage });
