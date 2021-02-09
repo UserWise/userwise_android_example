@@ -32,7 +32,7 @@ public class ExampleMessageHandler implements MessageEventListener {
     public void onMessageAvailable(Message message) {
         Log.d(TAG, "Message is available! Initializing message with id " + message.getId());
 
-        Toast.makeText(mainActivity, "Title: " + message.getTitle() + " - Body: " + message.getBody() + " - Portrait image: " + message.getPortraitImageId() + " - Landscape image: " + message.getLandscapeImageId(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(mainActivity, "Title: " + message.getTitle() + " - Body: " + message.getBody() + " - Portrait image: " + message.getPortraitImageId() + " - Landscape image: " + message.getLandscapeImageId() + " - Additional Fields: " + message.getAdditionalFields(), Toast.LENGTH_SHORT).show();
 
         userWise.getMessages().setMessageAsViewed(message);
     }
