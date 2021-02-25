@@ -8,20 +8,19 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <EditText
+        android:id="@+id/userIdField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+
     <Button
-        android:id="@+id/button"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/changeUserBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:textColor="@color/colorPrimary"
-        android:onClick="forceRefreshHasSurveysAvailable"
-        android:text="@string/force_refresh_surveys" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:srcCompat="@tools:sample/avatars" />
-
+        android:layout_marginTop="20dp"
+        android:editable="false"
+        android:text="Button" />
 </androidx.appcompat.widget.LinearLayoutCompat>

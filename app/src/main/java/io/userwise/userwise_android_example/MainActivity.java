@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,10 +56,27 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
     private final FloatVariable exchangeRate = new FloatVariable("exchangeRate", 0.0f);
     private final FileVariable headerImage = new FileVariable("headerImage", null);
 
+    private TextView userIdTxtEditor;
+    private Button userIdChangeBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        userIdTxtEditor = findViewById(R.id.userIdField);
+        userIdTxtEditor.setText("userwise-demo-app-user-android");
+
+        userIdChangeBtn = findViewById(R.id.changeUserBtn);
+
+        final MainActivity self = this;
+        userIdChangeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                self.stopSDK();
+                self.startSDK();
+            }
+        });
     }
 
     @Override
@@ -70,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         }
 
         // 2) Start the SDK
-        userWise.onStart();
+        this.startSDK();
 
         // Finally, you can also assign your app user attributes and events directly within the SDK!
         //try {
@@ -88,14 +107,22 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         userWise.onStop();
     }
 
+    void stopSDK() {
+        userWise.onStop();
+    }
+
+    void startSDK() {
+        userWise.setUserId(userIdTxtEditor.getText().toString());
+        userWise.onStart();
+    }
+
     private void configureUserWiseSDK() {
         // UserWise SDK 'Global' Configuration
         userWise.setContext(this);
         userWise.setDebugMode(true);
-        userWise.setHttpSchemeOverride("https");
-        userWise.setHostOverride("staging.userwise.io"); // (staging)
+        userWise.setHttpSchemeOverride("http");
+        userWise.setHostOverride("10.0.2.2:3000"); // (staging)
         userWise.setApiKey("f1535363ad9ab340ebc9786337b0"); // (staging)
-        userWise.setUserId("userwise-demo-app-user-android");
 
         // UserWise SDK 'Module' Configuration
         //
@@ -131,26 +158,6 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         Log.d(TAG, "startThisThingAt: " + this.startThisThingAt.getISO8601());
         Log.d(TAG, "title: " + this.title.getValue());
         Log.d(TAG, "exchangeRate: " + this.exchangeRate.getValue());
-        Log.d(TAG, "headerImage: " + this.headerImage.getFileId());
-
-        final FileVariable headerImage = this.headerImage;
-        if (headerImage.getFileId() != null) {
-            this.userWise.loadBitmapFromMediaId(headerImage.getFileId(), false, new MediaRawDataHandler() {
-                @Override
-                public void onSuccess(Bitmap media) {
-                    //mediaInfo.getName();
-                    //mediaInfo.getContentType();
-                    Log.d("UserWiseExample", "Header Image Loaded: " + headerImage.getFileId());
-                    ImageView imageView = findViewById(R.id.imageView);
-                    imageView.setImageBitmap(media);
-                }
-
-                @Override
-                public void onError() {
-                    Log.d("UserWiseExample", "Failed to load header image: " + headerImage.getFileId());
-                }
-            });
-        }
     }
 
     @Override
