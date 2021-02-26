@@ -120,8 +120,8 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         // UserWise SDK 'Global' Configuration
         userWise.setContext(this);
         userWise.setDebugMode(true);
-        userWise.setHttpSchemeOverride("http");
-        userWise.setHostOverride("10.0.2.2:3000"); // (staging)
+        userWise.setHttpSchemeOverride("https");
+        userWise.setHostOverride("staging.userwise.io"); // (staging)
         userWise.setApiKey("f1535363ad9ab340ebc9786337b0"); // (staging)
 
         // UserWise SDK 'Module' Configuration

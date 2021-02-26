@@ -22,5 +22,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:editable="false"
-        android:text="Button" />
+        android:text="Change Player" />
 </androidx.appcompat.widget.LinearLayoutCompat>
