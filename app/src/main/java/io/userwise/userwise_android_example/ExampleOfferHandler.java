@@ -15,7 +15,6 @@ import io.userwise.userwise_sdk.offers.OfferImpressionState;
 import io.userwise.userwise_sdk.offers.OfferViewAttemptFailedReason;
 
 public class ExampleOfferHandler implements OfferEventListener {
-
     private String TAG = getClass().getName();
 
     @Override

@@ -1,0 +1,67 @@
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\napply plugin: 'kotlin-android'\napply plugin: 'kotlin-android-extensions'\n\nandroid {\n    compileSdkVersion 29\n    buildToolsVersion \"29.0.3\"\n    defaultConfig {\n        applicationId \"io.userwise.userwise_android_example\"\n        minSdkVersion 21\n        targetSdkVersion 29\n        versionCode 1\n        versionName \"1.0\"\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n    }\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n    compileOptions {\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n}\n\ndependencies {\n    // for userwise debugging :-)\n    //implementation fileTree(dir: 'libs', include: ['*.aar'])\n    implementation \"io.userwise.userwise_sdk:userwise_sdk:2.0.1\"\n\n    implementation \"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version\"\n    implementation \"org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3\"\n    implementation \"org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.3.3\"\n\n    implementation 'androidx.appcompat:appcompat:1.1.0'\n    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'\n    implementation 'androidx.core:core-ktx:1.2.0'\n    implementation 'com.android.volley:volley:1.1.1'\n    implementation 'com.google.code.gson:gson:2.8.5'\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision 44d8a95e883bd5411e31a16d52f96a8ac981b68b)
++++ app/build.gradle	(date 1617190036000)
+@@ -26,8 +26,8 @@
+ 
+ dependencies {
+     // for userwise debugging :-)
+-    //implementation fileTree(dir: 'libs', include: ['*.aar'])
+-    implementation "io.userwise.userwise_sdk:userwise_sdk:2.0.1"
++    implementation fileTree(dir: 'libs', include: ['*.aar'])
++    //implementation "io.userwise.userwise_sdk:userwise_sdk:2.0.1"
+ 
+     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3"
+Index: app/src/main/java/io/userwise/userwise_android_example/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package io.userwise.userwise_android_example;\n\nimport androidx.appcompat.app.AppCompatActivity;\nimport androidx.core.content.ContextCompat;\n\nimport android.app.ActionBar;\nimport android.app.Dialog;\nimport android.graphics.Bitmap;\nimport android.graphics.drawable.Drawable;\nimport android.os.Bundle;\nimport android.util.Log;\nimport android.view.View;\nimport android.view.Window;\nimport android.widget.Button;\nimport android.widget.ImageView;\nimport android.widget.TextView;\n\nimport org.json.JSONException;\nimport org.json.JSONObject;\n\nimport java.io.File;\nimport java.util.Calendar;\nimport java.util.logging.Logger;\n\nimport io.userwise.userwise_sdk.MediaInfo;\nimport io.userwise.userwise_sdk.UserWise;\nimport io.userwise.userwise_sdk.MediaRawDataHandler;\nimport io.userwise.userwise_sdk.events.EventsModule;\nimport io.userwise.userwise_sdk.offers.OffersModule;\nimport io.userwise.userwise_sdk.surveys.SurveysModule;\nimport io.userwise.userwise_sdk.surveys.Survey;\nimport io.userwise.userwise_sdk.variables.BooleanVariable;\nimport io.userwise.userwise_sdk.variables.DateTimeVariable;\nimport io.userwise.userwise_sdk.variables.FileVariable;\nimport io.userwise.userwise_sdk.variables.FloatVariable;\nimport io.userwise.userwise_sdk.variables.IntegerVariable;\nimport io.userwise.userwise_sdk.variables.StringVariable;\nimport io.userwise.userwise_sdk.variables.Variable;\nimport io.userwise.userwise_sdk.variables.VariablesModule;\nimport io.userwise.userwise_sdk.variables.VariablesEventListener;\n\npublic class MainActivity extends AppCompatActivity implements VariablesEventListener {\n    private static String TAG = \"UserWiseExample\";\n    private static Logger logger = Logger.getLogger(\"userwise_example_app\");\n    private UserWise userWise = UserWise.INSTANCE;\n    private Dialog surveyOffer;\n\n    private Survey survey;\n    private String surveyResponseId;\n    private String surveyInviteId;\n\n    private final IntegerVariable maxLevel = new IntegerVariable(\"maxLevel\", 100);\n    private final BooleanVariable enableThingA = new BooleanVariable(\"enableThingA\", false);\n    private final DateTimeVariable startThisThingAt = new DateTimeVariable(\"startThisThingAt\", Calendar.getInstance().getTime());\n    private final StringVariable title = new StringVariable(\"title\", \"Default Title\");\n    private final FloatVariable exchangeRate = new FloatVariable(\"exchangeRate\", 0.0f);\n    private final FileVariable headerImage = new FileVariable(\"headerImage\", null);\n\n    private TextView userIdTxtEditor;\n    private Button userIdChangeBtn;\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_main);\n\n        userIdTxtEditor = findViewById(R.id.userIdField);\n        userIdTxtEditor.setText(\"userwise-demo-app-user-android\");\n\n        userIdChangeBtn = findViewById(R.id.changeUserBtn);\n\n        final MainActivity self = this;\n        userIdChangeBtn.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                self.stopSDK();\n                self.startSDK();\n            }\n        });\n    }\n\n    @Override\n    protected void onResume() {\n        super.onResume();\n\n        // 1) Configure the SDK...\n        if (!userWise.isSessionInitialized()) {\n            this.configureUserWiseSDK();\n        }\n\n        // 2) Start the SDK\n        this.startSDK();\n\n        // Finally, you can also assign your app user attributes and events directly within the SDK!\n        //try {\n        //    JSONObject eventAttributes = new JSONObject().put(\"is_new_player\", false);\n        //    userWise.assignEvent(\"event_logged_in\", eventAttributes);\n\n        //    JSONObject attributes = new JSONObject().put(\"current_coins\", 1000).put(\"current_diamonds\", 20);\n        //    userWise.setAttributes(attributes);\n        //} catch (JSONException e) {}\n    }\n\n    @Override\n    protected void onPause() {\n        super.onPause();\n        userWise.onStop();\n    }\n\n    void stopSDK() {\n        userWise.onStop();\n    }\n\n    void startSDK() {\n        userWise.setUserId(userIdTxtEditor.getText().toString());\n        userWise.onStart();\n    }\n\n    private void configureUserWiseSDK() {\n        // UserWise SDK 'Global' Configuration\n        userWise.setContext(this);\n        userWise.setDebugMode(true);\n        userWise.setHttpSchemeOverride(\"https\");\n        userWise.setHostOverride(\"staging.userwise.io\"); // (staging)\n        userWise.setApiKey(\"f1535363ad9ab340ebc9786337b0\"); // (staging)\n\n        // UserWise SDK 'Module' Configuration\n        //\n        // Most module configuration can be handled dynamically, however, as of writing this\n        // comment; you *must* define all variables prior to initializing the SDK.\n        Drawable logo = ContextCompat.getDrawable(this, R.drawable.userwise_herowars_logo);\n        int primaryColor = ContextCompat.getColor(this, R.color.userWisePrimaryColorOverride);\n        int backgroundColor = ContextCompat.getColor(this, R.color.userWiseSplashScreenBackgroundColorOverride);\n\n        SurveysModule surveysModule = userWise.getSurveys();\n        surveysModule.setSurveyListener(new ExampleSurveyHandler(this));\n        surveysModule.setSplashScreenLogo(logo);\n        surveysModule.setColors(primaryColor, backgroundColor);\n\n        OffersModule offersModule = userWise.getOffers();\n        offersModule.setOfferListener(new ExampleOfferHandler());\n\n        VariablesModule variablesModule = userWise.getVariables();\n        variablesModule.defineVariables(new Variable[]{ maxLevel, enableThingA, startThisThingAt, title, exchangeRate, headerImage });\n        variablesModule.setVariableListener(this);\n\n        EventsModule eventsModule = userWise.getEvents();\n        eventsModule.setEventsListener(new ExampleEventHandler());\n    }\n\n    @Override\n    public void onVariablesLoaded(boolean fromCache) {\n        Log.d(TAG, \"Variable loaded!\");\n\n        Log.d(TAG, \"Variables Defined:\");\n        Log.d(TAG, \"maxLevel: \" + this.maxLevel.getValue());\n        Log.d(TAG, \"enableThingA: \" + this.enableThingA.getValue());\n        Log.d(TAG, \"startThisThingAt: \" + this.startThisThingAt.getISO8601());\n        Log.d(TAG, \"title: \" + this.title.getValue());\n        Log.d(TAG, \"exchangeRate: \" + this.exchangeRate.getValue());\n    }\n\n    @Override\n    public void onVariableValueChanged(Variable variable) { }\n\n    public void declineSurveyInvite(View view) {\n        userWise.getSurveys().setSurveyInviteResponse(this.survey, this.surveyResponseId, this.surveyInviteId, false);\n        this.dismissSurveyInvite();\n    }\n\n    public void acceptSurveyInvite(View view) {\n        userWise.getSurveys().setSurveyInviteResponse(this.survey, this.surveyResponseId, this.surveyInviteId, true);\n        this.dismissSurveyInvite();\n    }\n\n    public void dismissSurveyInvite() {\n        if (this.surveyOffer != null) {\n            this.surveyResponseId = null;\n            this.surveyInviteId = null;\n            this.surveyOffer.dismiss();\n            this.surveyOffer = null;\n        }\n    }\n\n    public void showSurveyOffer(Survey survey, String surveyResponseId, String surveyInviteId) {\n        if (this.surveyOffer == null) {\n            this.surveyOffer = new Dialog(this);\n            this.surveyOffer.getWindow().requestFeature(Window.FEATURE_NO_TITLE);\n            this.surveyOffer.setContentView(getLayoutInflater().inflate(R.layout.survey_invite_layout,null));\n\n            this.survey = survey;\n            this.surveyResponseId = surveyResponseId;\n            this.surveyInviteId = surveyInviteId;\n        }\n\n        this.surveyOffer.show();\n        this.surveyOffer.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/io/userwise/userwise_android_example/MainActivity.java	(revision 44d8a95e883bd5411e31a16d52f96a8ac981b68b)
++++ app/src/main/java/io/userwise/userwise_android_example/MainActivity.java	(date 1617190360000)
+@@ -50,6 +50,7 @@
+     private String surveyInviteId;
+ 
+     private final IntegerVariable maxLevel = new IntegerVariable("maxLevel", 100);
++    private final IntegerVariable maxLevel2 = new IntegerVariable("maxLevel2", 100);
+     private final BooleanVariable enableThingA = new BooleanVariable("enableThingA", false);
+     private final DateTimeVariable startThisThingAt = new DateTimeVariable("startThisThingAt", Calendar.getInstance().getTime());
+     private final StringVariable title = new StringVariable("title", "Default Title");
+@@ -120,9 +121,9 @@
+         // UserWise SDK 'Global' Configuration
+         userWise.setContext(this);
+         userWise.setDebugMode(true);
+-        userWise.setHttpSchemeOverride("https");
+-        userWise.setHostOverride("staging.userwise.io"); // (staging)
+-        userWise.setApiKey("f1535363ad9ab340ebc9786337b0"); // (staging)
++        userWise.setHttpSchemeOverride("http");
++        userWise.setHostOverride("10.0.2.2:3000"); // (staging)
++        userWise.setApiKey("0abf3c41d9bf0d15b514870d9742"); // (staging)
+ 
+         // UserWise SDK 'Module' Configuration
+         //
+@@ -141,7 +142,7 @@
+         offersModule.setOfferListener(new ExampleOfferHandler());
+ 
+         VariablesModule variablesModule = userWise.getVariables();
+-        variablesModule.defineVariables(new Variable[]{ maxLevel, enableThingA, startThisThingAt, title, exchangeRate, headerImage });
++        variablesModule.defineVariables(new Variable[]{ maxLevel, maxLevel2, enableThingA, startThisThingAt, title, exchangeRate, headerImage });
+         variablesModule.setVariableListener(this);
+ 
+         EventsModule eventsModule = userWise.getEvents();
+@@ -154,6 +155,7 @@
+ 
+         Log.d(TAG, "Variables Defined:");
+         Log.d(TAG, "maxLevel: " + this.maxLevel.getValue());
++        Log.d(TAG, "maxLevel2: " + this.maxLevel2.getValue());
+         Log.d(TAG, "enableThingA: " + this.enableThingA.getValue());
+         Log.d(TAG, "startThisThingAt: " + this.startThisThingAt.getISO8601());
+         Log.d(TAG, "title: " + this.title.getValue());

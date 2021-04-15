@@ -26,6 +26,7 @@ import io.userwise.userwise_sdk.MediaInfo;
 import io.userwise.userwise_sdk.UserWise;
 import io.userwise.userwise_sdk.MediaRawDataHandler;
 import io.userwise.userwise_sdk.events.EventsModule;
+import io.userwise.userwise_sdk.messages.MessagesModule;
 import io.userwise.userwise_sdk.offers.OffersModule;
 import io.userwise.userwise_sdk.surveys.SurveysModule;
 import io.userwise.userwise_sdk.surveys.Survey;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         setContentView(R.layout.activity_main);
 
         userIdTxtEditor = findViewById(R.id.userIdField);
-        userIdTxtEditor.setText("userwise-demo-app-user-android");
+        userIdTxtEditor.setText("userwise-demo-app-user-android-dac");
 
         userIdChangeBtn = findViewById(R.id.changeUserBtn);
 
@@ -121,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         userWise.setContext(this);
         userWise.setDebugMode(true);
         userWise.setHttpSchemeOverride("https");
-        userWise.setHostOverride("staging.userwise.io"); // (staging)
-        userWise.setApiKey("f1535363ad9ab340ebc9786337b0"); // (staging)
+        userWise.setHostOverride("userwise.io"); // (staging)
+        userWise.setApiKey(""); // (staging)
 
         // UserWise SDK 'Module' Configuration
         //
@@ -143,6 +144,9 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         VariablesModule variablesModule = userWise.getVariables();
         variablesModule.defineVariables(new Variable[]{ maxLevel, enableThingA, startThisThingAt, title, exchangeRate, headerImage });
         variablesModule.setVariableListener(this);
+
+        MessagesModule messagesModule = userWise.getMessages();
+        messagesModule.setMessageListener(new ExampleMessageHandler(messagesModule));
 
         EventsModule eventsModule = userWise.getEvents();
         eventsModule.setEventsListener(new ExampleEventHandler());
