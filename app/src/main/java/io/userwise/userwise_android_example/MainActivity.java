@@ -31,6 +31,8 @@ import io.userwise.userwise_sdk.MediaInfo;
 import io.userwise.userwise_sdk.PlayerAttribute;
 import io.userwise.userwise_sdk.PlayerEvent;
 import io.userwise.userwise_sdk.PlayerEventAttribute;
+import io.userwise.userwise_sdk.Region;
+import io.userwise.userwise_sdk.RegionMetadata;
 import io.userwise.userwise_sdk.UserWise;
 import io.userwise.userwise_sdk.MediaRawDataHandler;
 import io.userwise.userwise_sdk.UserWiseStateListener;
@@ -118,9 +120,9 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         // UserWise SDK 'Global' Configuration
         userWise.setContext(this);
         userWise.setDebugMode(true);
-        userWise.setHttpSchemeOverride("https");
-        userWise.setHostOverride("staging.userwise.io");
-        userWise.setApiKey("");
+        userWise.setHttpSchemeOverride("http");
+        userWise.setHostOverride("10.0.2.2:3000");
+        userWise.setApiKey("e57656c13e8eb14e190203f92d75");
 
         // UserWise SDK 'Module' Configuration
         //
@@ -169,6 +171,13 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
                         playerAttributes.add(new PlayerAttribute("ltv", AttributableDataType.FLOAT, 120.24));
                         playerAttributes.add(new PlayerAttribute("season_spring_2021_passholder", AttributableDataType.BOOLEAN, false));
                         userWise.setAttributes(playerAttributes, null);
+
+                        // ...Also, you can transition to various regions
+                        ArrayList<RegionMetadata> regionMetadata = new ArrayList<>();
+                        regionMetadata.add(new RegionMetadata("team_one_power", AttributableDataType.INTEGER, 115));
+                        regionMetadata.add(new RegionMetadata("team_two_power", AttributableDataType.INTEGER, 258));
+                        Region region = new Region("team_battle", regionMetadata);
+                        userWise.transitionToRegion(region, null);
                     }
                 }, 5000);
             }
