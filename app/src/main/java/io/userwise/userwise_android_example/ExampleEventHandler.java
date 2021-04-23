@@ -35,6 +35,10 @@ public class ExampleEventHandler implements GameEventsListener {
     public void onEventActive(@NotNull GameEvent gameEvent) {
         Log.i(TAG, "Event Active Found: " + gameEvent.getName());
 
+        // All dynamically configured event data can be retrieved by accessing
+        // the gameEvent.getData() JSONObject.
+
+        // All Data Methods:
         // gameEvent.getName();
         // gameEvent.getData();
         // gameEvent.getEndAt();

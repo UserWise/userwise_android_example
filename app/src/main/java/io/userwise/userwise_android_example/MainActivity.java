@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -15,16 +16,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Logger;
 
+import io.userwise.userwise_sdk.AttributableDataType;
 import io.userwise.userwise_sdk.MediaInfo;
+import io.userwise.userwise_sdk.PlayerAttribute;
+import io.userwise.userwise_sdk.PlayerEvent;
+import io.userwise.userwise_sdk.PlayerEventAttribute;
 import io.userwise.userwise_sdk.UserWise;
 import io.userwise.userwise_sdk.MediaRawDataHandler;
+import io.userwise.userwise_sdk.UserWiseStateListener;
 import io.userwise.userwise_sdk.events.EventsModule;
 import io.userwise.userwise_sdk.messages.MessagesModule;
 import io.userwise.userwise_sdk.offers.OffersModule;
@@ -42,7 +51,6 @@ import io.userwise.userwise_sdk.variables.VariablesEventListener;
 
 public class MainActivity extends AppCompatActivity implements VariablesEventListener {
     private static String TAG = "UserWiseExample";
-    private static Logger logger = Logger.getLogger("userwise_example_app");
     private UserWise userWise = UserWise.INSTANCE;
     private Dialog surveyOffer;
 
@@ -84,22 +92,11 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
     protected void onResume() {
         super.onResume();
 
-        // 1) Configure the SDK...
         if (!userWise.isSessionInitialized()) {
             this.configureUserWiseSDK();
         }
 
-        // 2) Start the SDK
         this.startSDK();
-
-        // Finally, you can also assign your app user attributes and events directly within the SDK!
-        //try {
-        //    JSONObject eventAttributes = new JSONObject().put("is_new_player", false);
-        //    userWise.assignEvent("event_logged_in", eventAttributes);
-
-        //    JSONObject attributes = new JSONObject().put("current_coins", 1000).put("current_diamonds", 20);
-        //    userWise.setAttributes(attributes);
-        //} catch (JSONException e) {}
     }
 
     @Override
@@ -122,8 +119,8 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         userWise.setContext(this);
         userWise.setDebugMode(true);
         userWise.setHttpSchemeOverride("https");
-        userWise.setHostOverride("userwise.io"); // (staging)
-        userWise.setApiKey(""); // (staging)
+        userWise.setHostOverride("staging.userwise.io");
+        userWise.setApiKey("");
 
         // UserWise SDK 'Module' Configuration
         //
@@ -150,6 +147,35 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
 
         EventsModule eventsModule = userWise.getEvents();
         eventsModule.setEventsListener(new ExampleEventHandler());
+
+        // You can also listen to internal UserWise state changes.
+        this.userWise.addStateListener(new UserWiseStateListener() {
+            @Override
+            public void onStart(boolean isSessionInitialized) {}
+
+            @Override
+            public void onSessionInitialized(@NotNull String s) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // You can assign PlayerEvents (w/ optional attributes)...
+                        ArrayList<PlayerEventAttribute> eventAttributes = new ArrayList<>();
+                        eventAttributes.add(new PlayerEventAttribute("new_player", AttributableDataType.BOOLEAN, false));
+                        userWise.assignEvent(new PlayerEvent("event_logged_in", eventAttributes), null);
+
+                        // ...And, you can assign PlayerAttributes
+                        ArrayList<PlayerAttribute> playerAttributes = new ArrayList<>();
+                        playerAttributes.add(new PlayerAttribute("coins", AttributableDataType.INTEGER, 1000));
+                        playerAttributes.add(new PlayerAttribute("ltv", AttributableDataType.FLOAT, 120.24));
+                        playerAttributes.add(new PlayerAttribute("season_spring_2021_passholder", AttributableDataType.BOOLEAN, false));
+                        userWise.setAttributes(playerAttributes, null);
+                    }
+                }, 5000);
+            }
+
+            @Override
+            public void onStop() {}
+        });
     }
 
     @Override
@@ -165,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
     }
 
     @Override
-    public void onVariableValueChanged(Variable variable) { }
+    public void onVariableValueChanged(Variable variable, Object previousValue) { }
 
     public void declineSurveyInvite(View view) {
         userWise.getSurveys().setSurveyInviteResponse(this.survey, this.surveyResponseId, this.surveyInviteId, false);
