@@ -14,3 +14,4 @@
 .cxx
 app/libs/**/*
 !app/libs/.keep
+!userwise_sdk-2.0.4.aar
