@@ -21,12 +21,12 @@ public class ExampleSurveyHandler implements SurveyEventListener {
 
     @Override
     public void onSurveysLoaded(boolean fromCache) {
-        Log.d(TAG, "Offers have been loaded... From cache? " + fromCache);
+        Log.d(TAG, "Surveys have been loaded... From cache? " + fromCache);
     }
 
     @Override
     public void onSurveyAvailable(Survey survey) {
-        Log.d(TAG, "Offer is available! Initializing survey with id " + survey.getId());
+        Log.d(TAG, "Survey is available! Initializing survey with id " + survey.getId());
 
         if (userWise.getSurveys().isTakingSurvey()) { return; }
         userWise.getSurveys().initializeSurveyInvite(survey);
