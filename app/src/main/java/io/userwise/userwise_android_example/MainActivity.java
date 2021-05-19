@@ -122,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         userWise.setContext(this);
         //userWise.setDebugMode(true);
         //userWise.setHttpSchemeOverride("http");
-        //userWise.setHostOverride("10.0.2.2:3000");
-        userWise.setApiKey("");
+        userWise.setHostOverride("staging.userwise.io");
+        userWise.setApiKey("4b12a0bbcb35b6e961e923368fd9");
 
         // UserWise SDK 'Module' Configuration
         //
@@ -140,9 +140,6 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
 
         OffersModule offersModule = userWise.getOffers();
         offersModule.setOfferListener(new ExampleOfferHandler());
-
-        MessagesModule messagesModule = userWise.getMessages();
-        messagesModule.setMessageListener(new ExampleMessageHandler(this));
 
         VariablesModule variablesModule = userWise.getVariables();
         variablesModule.defineVariables(new Variable[]{ maxLevel, enableThingA, startThisThingAt, title, exchangeRate, headerImage });
