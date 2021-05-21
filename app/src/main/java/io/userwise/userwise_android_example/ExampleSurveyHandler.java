@@ -3,6 +3,8 @@ package io.userwise.userwise_android_example;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.List;
+
 import io.userwise.userwise_android_example.MainActivity;
 import io.userwise.userwise_sdk.UserWise;
 import io.userwise.userwise_sdk.surveys.SurveyEventListener;
@@ -26,7 +28,27 @@ public class ExampleSurveyHandler implements SurveyEventListener {
 
     @Override
     public void onSurveyAvailable(Survey survey) {
-        Log.d(TAG, "Survey is available! Initializing survey with id " + survey.getId());
+        Log.i(
+                TAG,
+                "\nSurvey Available:" +
+                        "\n|- ID: " + survey.getId() +
+                        "\n|- Name: " + survey.getName() +
+                        "\n|- Number of Questions:" + survey.getQuestionsCount()
+        );
+
+        if (userWise.getSurveys().isTakingSurvey()) { return; }
+        userWise.getSurveys().initializeSurveyInvite(survey);
+    }
+
+    @Override
+    public void onSurveyUnavailable(Survey survey) {
+        Log.i(
+                TAG,
+                "\nSurvey Unvailable:" +
+                        "\n|- ID: " + survey.getId() +
+                        "\n|- Name: " + survey.getName() +
+                        "\n|- Number of Questions:" + survey.getQuestionsCount()
+        );
 
         if (userWise.getSurveys().isTakingSurvey()) { return; }
         userWise.getSurveys().initializeSurveyInvite(survey);

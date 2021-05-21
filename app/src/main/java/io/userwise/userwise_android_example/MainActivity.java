@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         setContentView(R.layout.activity_main);
 
         userIdTxtEditor = findViewById(R.id.userIdField);
-        userIdTxtEditor.setText("userwise-demo-app-user-android");
+        userIdTxtEditor.setText("userwise-demo-app-user-androidasdfasdf");
 
         userIdChangeBtn = findViewById(R.id.changeUserBtn);
 
@@ -119,9 +119,9 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
     private void configureUserWiseSDK() {
         // UserWise SDK 'Global' Configuration
         userWise.setContext(this);
-        //userWise.setDebugMode(true);
+        userWise.setDebugMode(true);
         //userWise.setHttpSchemeOverride("http");
-        //userWise.setHostOverride("10.0.2.2:3000");
+        //userWise.setHostOverride("");
         userWise.setApiKey("");
 
         // UserWise SDK 'Module' Configuration

@@ -24,13 +24,30 @@ public class ExampleOfferHandler implements OfferEventListener {
 
     @Override
     public void onOfferAvailable(@NotNull Offer offer) {
-        Log.d(TAG, "Offer is available! Initializing offer with id " + offer.getId());
+        Log.i(
+                TAG,
+                "\nOffer Available:" +
+                        "\n|- ID: " + offer.getId() +
+                        "\n|- Name: " + offer.getName() +
+                        "\n|- Bundle:" +
+                        "\n   |- Items: " + offer.getItems() +
+                        "\n   |- Currencies: " + offer.getCurrencies()
+        );
+
         UserWise.INSTANCE.getOffers().initializeOfferImpression(offer);
     }
 
     @Override
-    public void onOfferUnavailable() {
-        Log.d(TAG, "No offers are available.");
+    public void onOfferUnavailable(@NotNull Offer offer) {
+        Log.i(
+                TAG,
+                "\nOffer Unavailable:" +
+                        "\n|- ID: " + offer.getId() +
+                        "\n|- Name: " + offer.getName() +
+                        "\n|- Bundle:" +
+                        "\n   |- Items: " + offer.getItems() +
+                        "\n   |- Currencies: " + offer.getCurrencies()
+        );
     }
 
     @Override
@@ -75,14 +92,9 @@ public class ExampleOfferHandler implements OfferEventListener {
         //offerImpression.updateState(OfferImpressionState.PURCHASE_FAILED);
     }
 
-    // these are all ignored
-    @Override
-    public void onOfferViewAttemptFailed(@NotNull OfferImpression offerImpression, @NotNull OfferViewAttemptFailedReason reason) {}
-    @Override
-    public void onOfferViewed(@NotNull OfferImpression offerImpression) {}
     @Override
     public void onOfferDismissed(@NotNull OfferImpression offerImpression) {}
+
     @Override
     public void onOfferAccepted(@NotNull OfferImpression offerImpression) {}
-
 }
