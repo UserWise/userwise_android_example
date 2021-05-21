@@ -20,23 +20,26 @@ public class ExampleMessageHandler implements MessageEventListener {
     @Override
     public void onMessagesLoaded(boolean fromCache) {
         Log.d(TAG, "Messages have been loaded... From cache? " + fromCache);
-
-        Log.d(TAG, "Total Available Messages: " + this.messageModule.getActiveMessages().toArray().length);
-        Log.d(TAG, "Total Upcoming Messages: " + this.messageModule.getUpcomingMessages().toArray().length);
     }
 
     @Override
     public void onMessageAvailable(@NotNull Message message) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("A message is available!\n");
-        stringBuilder.append("  ID: ").append(message.getId()).append('\n');
-        stringBuilder.append("  Name: ").append(message.getName()).append('\n');
-        stringBuilder.append("  Title: ").append(message.getTitle()).append('\n');
-        stringBuilder.append("  Body: ").append(message.getBody()).append('\n');
-        stringBuilder.append("  Portrait Image ID: ").append(message.getPortraitImageId()).append('\n');
-        stringBuilder.append("  Landscape Image ID: ").append(message.getLandscapeImageId()).append('\n');
-        stringBuilder.append("  Additional Fields Count: ").append(message.getAdditionalFields().length()).append('\n');
+        Log.i(TAG,
+                "\nMessage Available:" +
+                        "\n|- ID: " + message.getId() +
+                        "\n|- Name: " + message.getName() +
+                        "\n|- Additional Data:" + message.getAdditionalFields()
+        );
+    }
 
-        Log.d(TAG, stringBuilder.toString());
+    @Override
+    public void onMessageUnavailable(@NotNull Message message) {
+        Log.i(
+                TAG,
+                "\nMessage Unavailable:" +
+                        "\n|- ID: " + message.getId() +
+                        "\n|- Name: " + message.getName() +
+                        "\n|- Additional Data:" + message.getAdditionalFields()
+        );
     }
 }
