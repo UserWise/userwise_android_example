@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         setContentView(R.layout.activity_main);
 
         userIdTxtEditor = findViewById(R.id.userIdField);
-        userIdTxtEditor.setText("userwise-demo-app-user-androidasdfasdf");
+        userIdTxtEditor.setText("userwise-demo-app-user-android");
 
         userIdChangeBtn = findViewById(R.id.changeUserBtn);
 
