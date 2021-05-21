@@ -40,6 +40,7 @@ import io.userwise.userwise_sdk.events.EventsModule;
 import io.userwise.userwise_sdk.messages.MessagesModule;
 import io.userwise.userwise_sdk.offers.OffersModule;
 import io.userwise.userwise_sdk.surveys.SurveysModule;
+import io.userwise.userwise_sdk.messages.MessagesModule;
 import io.userwise.userwise_sdk.surveys.Survey;
 import io.userwise.userwise_sdk.variables.BooleanVariable;
 import io.userwise.userwise_sdk.variables.DateTimeVariable;
