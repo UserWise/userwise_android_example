@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.FirebaseApp;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
     protected void onResume() {
         super.onResume();
 
+        FirebaseApp.initializeApp(this);
         if (!userWise.isSessionInitialized()) {
             this.configureUserWiseSDK();
         }
