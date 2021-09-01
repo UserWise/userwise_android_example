@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.FirebaseApp;
+//import com.google.firebase.FirebaseApp;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -41,6 +41,7 @@ import io.userwise.userwise_sdk.UserWiseStateListener;
 import io.userwise.userwise_sdk.events.EventsModule;
 import io.userwise.userwise_sdk.messages.MessagesModule;
 import io.userwise.userwise_sdk.offers.OffersModule;
+import io.userwise.userwise_sdk.remote_configs.RemoteConfigsModule;
 import io.userwise.userwise_sdk.surveys.SurveysModule;
 import io.userwise.userwise_sdk.surveys.Survey;
 import io.userwise.userwise_sdk.variables.BooleanVariable;
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
     protected void onResume() {
         super.onResume();
 
-        FirebaseApp.initializeApp(this);
+        //FirebaseApp.initializeApp(this);
         if (!userWise.isSessionInitialized()) {
             this.configureUserWiseSDK();
         }
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
         // UserWise SDK 'Global' Configuration
         userWise.setContext(this);
         userWise.setDebugMode(true);
-        //userWise.setHttpSchemeOverride("http");
+        //userWise.setHttpSchemeOverride("");
         //userWise.setHostOverride("");
         userWise.setApiKey("");
 
@@ -152,6 +153,9 @@ public class MainActivity extends AppCompatActivity implements VariablesEventLis
 
         EventsModule eventsModule = userWise.getEvents();
         eventsModule.setEventsListener(new ExampleEventHandler());
+
+        RemoteConfigsModule remoteConfigsModule = userWise.getRemoteConfigs();
+        remoteConfigsModule.setRemoteConfigListener(new ExampleRemoteConfigHandler());
 
         // You can also listen to internal UserWise state changes.
         this.userWise.addStateListener(new UserWiseStateListener() {
