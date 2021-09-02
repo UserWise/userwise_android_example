@@ -13,6 +13,15 @@ public class ExampleRemoteConfigHandler implements RemoteConfigListener {
     @Override
     public void onRemoteConfigsLoaded(boolean fromCache) {
         Log.i(TAG, "Remote configs have been loaded... From cache? " + fromCache);
+
+        //RemoteConfig remoteConfig = UserWise.INSTANCE.getRemoteConfigs().getRemoteConfigByExternalId("sandbox_map");
+        // Log.i(TAG,
+        //                "Remote Config Active:" +
+        //                        "\n|- ID: " + remoteConfig.getId() +
+        //                        "\n|- Name: " + remoteConfig.getName() +
+        //                        "\n|- External ID: " + remoteConfig.getExternalId() +
+        //                        "\n|- JSON: " + remoteConfig.getJson()
+        //        );
     }
 
     @Override
