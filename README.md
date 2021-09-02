@@ -11,6 +11,10 @@ This repository hosts an example android application running the latest UserWise
 
 ## Changelog (v2.1.0+)
 
+### v2.2.0
+
+- Added support for the Remote Configuration content type
+
 ### v2.1.0
 
 - Introduced Push Notification support via a light-weight Firebase integration
